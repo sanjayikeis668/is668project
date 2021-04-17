@@ -3,13 +3,22 @@
 
 from flask import Flask
 from flask import render_template
+from flask import request
+from flask import redirect
+from flask import url_for
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
 
-@app.route('/')
+comments = []
+
+@app.route("/", methods=["GET", "POST"])
 def index():
-    return render_template('main.html')
+    if request.method == "GET":
+        return render_template("main.html", comments=comments)
+
+    comments.append(request.form["contents"])
+    return redirect(url_for('index'))
 
 @app.route('/john')
 def john():
