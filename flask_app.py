@@ -5,10 +5,11 @@ from flask import Flask
 from flask import render_template
 
 app = Flask(__name__)
+app.config["DEBUG"] = True
 
 @app.route('/')
-def hello_world():
-    return 'Hello IS688 from Flask'
+def index():
+    return render_template('main.html')
 
 @app.route('/john')
 def john():
