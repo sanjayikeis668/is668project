@@ -4,7 +4,8 @@
 from flask import Flask
 from flask import render_template
 from flask import request
-
+from flask import url_for
+from flask import redirect
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -33,11 +34,12 @@ class Comment(db.Model):
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "GET":
-        return render_template("main.html", comments=Comment.query.all())
+        return render_template("main_page.html", comments=Comment.query.all())
 
     comment = Comment(content=request.form["contents"])
     db.session.add(comment)
     db.session.commit()
+    return redirect(url_for('index'))
 
 @app.route('/john')
 def john():
