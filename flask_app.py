@@ -69,3 +69,7 @@ def template():
 def route():
     return render_template('route.html', name = 'route')
 
+@app.route("/login/")
+def login():
+    return render_template("login_page.html")
+
