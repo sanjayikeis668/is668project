@@ -7,6 +7,8 @@ from flask import request
 from flask import url_for
 from flask import redirect
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import login_user, LoginManager, UserMixin
+from werkzeug.security import check_password_hash, generate_password_hash
 
 
 app = Flask(__name__)
@@ -21,7 +23,37 @@ SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostnam
 app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
 app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
 db = SQLAlchemy(app)
+
+app.secret_key = "Ikechukwu"
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+class User(UserMixin):
+
+    def __init__(self, username, password_hash):
+        self.username = username
+        self.password_hash = password_hash
+
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+
+    def get_id(self):
+        return self.username
+
+
+all_users = {
+    "admin": User("admin", generate_password_hash("secret")),
+    "bob": User("bob", generate_password_hash("less-secret")),
+    "caroline": User("caroline", generate_password_hash("completely-secret")),
+}
+
+@login_manager.user_loader
+def load_user(user_id):
+    return all_users.get(user_id)
 
 class Comment(db.Model):
 
@@ -69,7 +101,18 @@ def template():
 def route():
     return render_template('route.html', name = 'route')
 
-@app.route("/login/")
+@app.route("/login/", methods=["GET", "POST"])
 def login():
-    return render_template("login_page.html")
+    if request.method == "GET":
+        return render_template("login_page.html", error=False)
 
+    username = request.form["username"]
+    if username not in all_users:
+        return render_template("login_page.html", error=True)
+    user = all_users[username]
+
+    if not user.check_password(request.form["password"]):
+        return render_template("login_page.html", error=True)
+
+    login_user(user)
+    return redirect(url_for('index'))
