@@ -9,6 +9,7 @@ from flask import redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, LoginManager, UserMixin, login_required, logout_user, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -66,10 +67,10 @@ class Comment(db.Model):
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "GET":
-        return render_template("main.html", comments=Comment.query.all())
+        return render_template("main.html", comments=Comment.query.all(), timestamp=datetime.now())
 
     if not current_user.is_authenticated:
-    return redirect(url_for('index'))
+        return redirect(url_for('index'))
     comment = Comment(content=request.form["contents"])
     db.session.add(comment)
     db.session.commit()
