@@ -1,0 +1,162 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+
+                  <style>
+
+
+                        * {
+                         font-size: 100%;
+                         font-family: Arial;
+                        }
+
+                    /* Full-width inputs */
+                    input[class=form-control], input[type=password] {
+                      width: 100%;
+                      padding: 12px 20px;
+                      margin: 8px 0;
+                      display: inline-block;
+                      border: 1px solid #ccc;
+                      box-sizing: border-box;
+                    }
+                    img {
+                            max-width: 30%;
+                            max-height: 30%;
+                            display: block;
+                          margin-left: auto;
+                          margin-right: auto;
+                        }
+                     body {
+                    background: rgba(0, 0, 50, 0.2) /* Green background with 30% opacity */
+}
+                    /* Set a style for all buttons */
+                    button {
+                      background-color: #6699ff;
+                      color: white;
+                      padding: 14px 20px;
+                      margin: 8px 0;
+                      border: none;
+                      cursor: pointer;
+                      width: 100%;
+                    }
+
+                    /* Add a hover effect for buttons */
+                    button:hover {
+                      opacity: 0.8;
+                    }
+
+                    /* Extra style for the cancel button (red) */
+                    .cancelbtn {
+                      width: auto;
+                      padding: 10px 18px;
+                      background-color: #f44336;
+                    }
+
+                    /* Center the avatar image inside this container */
+                    .imgcontainer {
+                      text-align: center;
+                      margin: 24px 0 12px 0;
+                    }
+
+                    /* Avatar image */
+                    img.avatar {
+                      width: 40%;
+                      border-radius: 50%;
+                    }
+                    .navbar-header {
+                        float: left;
+                        padding: 1px;
+                        text-align: left;
+                        width: 100%;
+
+                    }
+                    .navbar-brand {float:none;}
+                    /* Add padding to containers */
+                    .container {
+                      padding: 16px;
+                      font-size: larger;
+                    }
+                    .navbar-header a.navbar-brand {
+                          width: 100%;
+                          text-align: center;
+                          color: #ccffff;
+                          font-size: 45px;
+                          font-weight: bold;
+                        }
+
+
+
+
+
+
+            option{
+                height:50%;
+            }
+        </style>
+
+        <title>My scratchboard page</title>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-inverse">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <h1><a class="navbar-brand" href="#">Ike Eneremadu</a> IS668  04/20/2021</h1>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if current_user.is_authenticated %}
+                        <li><a href="{{ url_for('logout') }}">Log out</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('login') }}">Log in</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+	   <div class="container" style="min-height:100% width:80%">
+	        {% with messages = get_flashed_messages() %}
+	        {% if messages %}
+	            {% for message in messages %}
+		            <div class="alert alert-warning alert-dismissible" role="alert">
+		                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+			            {{message}}
+		            </div>
+		        {% endfor %}
+	        {% endif %}
+	        {% endwith %}
+
+	        {% block body %}{% endblock %}
+	    </div>
+
+
+            <div class="row">
+
+<div class="col-sm-3"></div>
+  <div class="col-sm-6">
+
+                <form action="{{url_for('addstudent')}}" method="POST">
+
+
+                    <input type="text" name="firstName" placeholder="Enter student's first name" class="form-control" required>
+                    <input type="text" name="lastName" placeholder="Enter student's last name" class="form-control" required>
+                    <input type="text" name="email" placeholder="Enter email" class="form-control" required>
+                    <input type="text" name="Major" placeholder="Enter student's major" class="form-control" required>
+                    <input type="submit" class="btn btn-success" style="width:100%" value="Add Student">
+                </form>
+</div>
+
+ <div class="col-sm-3"></div>
+            </div>
+
+    </body>
+</html>
