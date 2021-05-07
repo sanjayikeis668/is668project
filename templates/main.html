@@ -18,7 +18,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">My scratchpad</a>
+                    <h1><a class="navbar-brand" href="#">Ike Eneremadu</a> IS668  04/20/2021</h1>
                 </div>
                 <ul class="nav navbar-nav navbar-right">
                     {% if current_user.is_authenticated %}
@@ -29,9 +29,24 @@
                 </ul>
             </div>
         </nav>
+	   <div class="container" style="min-height:100% width:80%">
+	        {% with messages = get_flashed_messages() %}
+	        {% if messages %}
+	            {% for message in messages %}
+		            <div class="alert alert-warning alert-dismissible" role="alert">
+		                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+			            {{message}}
+		            </div>
+		        {% endfor %}
+	        {% endif %}
+	        {% endwith %}
 
+	        {% block body %}{% endblock %}
+	    </div>
 
         <div class="container">
+
+
             {% for comment in comments %}
             <div class="row" style="margin-bottom: 1ex">
                 <div>
@@ -47,23 +62,35 @@
                         {% endif %}
                         by
                         {% if comment.commenter %}
-                            {{ comment.commenter.username }}
+                            {{ comment.commenter.username}} User ID: {{comment.commenter.id}}
                         {% else %}
                             anonymous
                         {% endif %}
                     </small>
                 </div>
+                {% if current_user.is_authenticated %}
+                <form action="{{url_for('deletecomment', id = comment.id)}}" method="POST">
+
+                    <input type='submit' value='Delete comment' name='DeleteComment'>
+                </form>
+                {% endif %}
             </div>
             {% endfor %}
 
 
         {% if current_user.is_authenticated %}
             <div class="row">
-                <form action="." method="POST">
+
+
+                <form action="{{url_for('index')}}" method="POST">
+
+
                     <textarea name="contents" placeholder="Enter a comment" class="form-control"></textarea>
                      <input type="submit" class="btn btn-success" value="Post comment">
                 </form>
             </div>
+
+
         {% endif %}
         </div><!-- /.container -->
     </body>
