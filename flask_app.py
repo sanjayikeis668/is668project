@@ -98,7 +98,7 @@ class Assignments(db.Model):
 
 
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/comments", methods=["GET", "POST"])
 def index():
     if request.method == "GET":
         return render_template("main.html", comments=Comment.query.all())
@@ -160,7 +160,7 @@ def template():
 def route():
     return render_template('route.html', name = 'route')
 
-@app.route("/login/", methods=["GET", "POST"])
+@app.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
         return render_template("login_page.html", error=False)
@@ -200,7 +200,7 @@ def deletecomment(id):
 @login_required
 def addassignment():
     if request.method == "GET":
-        return render_template("projectpractice.html", students = Students.query.all())
+        return render_template("addassignments.html", students = Students.query.all())
 
 #Need to add grade
 
@@ -306,6 +306,7 @@ def updategrade(id):
     assignment = db.session.query(Assignments).get(id)
     assignment.grade = newgrade
     db.session.commit()
+    flash("Grade Updated")
     return redirect(url_for('displayassignments'))
 
 @app.route("/displayaveragegrades")
@@ -315,15 +316,6 @@ def displayaverage():
     return render_template('displayaveragegrade.html', averages = average)
 
 
-result = db.session.query(Assignments).join(Students).filter(Assignments.id==27).all()
-for row in result:
-    print(row)
-five = "hello"
-getstring = "get="+five
-print(getstring)
 
-result1 = db.session.query(Students.fname, Students.lname, func.avg(Assignments.grade)).join(Students).group_by(Students.fname)
-for row in result1:
-    print(row[2])
 
 

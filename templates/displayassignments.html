@@ -93,7 +93,7 @@
 
             </style>
 
-        <title>My scratchboard page</title>
+        <title>IS668 Display Assignments</title>
     </head>
 
     <body>
@@ -106,7 +106,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <h1><a class="navbar-brand" href="#">Display Assignments</a> IS668  </h1>
+                    <h1><a class="navbar-brand" href="#">Display Assignments</a> IS668 Project</h1>
                 </div>
                 <ul class="nav navbar-nav navbar-right">
                     {% if current_user.is_authenticated %}
@@ -114,6 +114,9 @@
                     {% else %}
                         <li><a href="{{ url_for('login') }}">Log in</a></li>
                     {% endif %}
+                </ul>
+                 <ul class="nav navbar-nav navbar-right">
+                        <li><a href="{{ url_for('landingpage') }}">Home</a></li>
                 </ul>
             </div>
         </nav>
